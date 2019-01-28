@@ -93,6 +93,7 @@
     "@types/jest": "^23.3.13",
     "@types/node": "^10.12.18",
     "@types/node-emoji": "^1.8.1",
+    "coveralls": "^3.0.2",
     "docma": "^3.2.2",
     "jest": "^24.0.0",
     "jest-cli": "^24.0.0",
