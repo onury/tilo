@@ -1,0 +1,101 @@
+{
+  "name": "tilo",
+  "version": "1.0.0",
+  "description": "Tiny logger with styles and levels for Node/TypeScript.",
+  "main": "lib/index.js",
+  "repository": "onury/tilo",
+  "author": "Onur Yıldırım <onur@cutepilot.com>",
+  "license": "MIT",
+  "files": [
+    "lib/",
+    "LICENSE"
+  ],
+  "types": "./lib/index.d.ts",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "docs": "docma",
+    "docs:serve": "docma && docma serve",
+    "vuls": "snyk test",
+    "deps": "npm-check -u && snyk test",
+    "clean": "rimraf ./lib",
+    "lint": "tslint --project ./",
+    "build": "npm run lint && npm run clean && mkdirp ./lib && tsc",
+    "test!": "jest --verbose --no-cache --runInBand",
+    "test": "npm run lint && npm run build && npm run test!",
+    "cover!": "npm run lint && jest --coverage --verbose --no-cache --runInBand",
+    "cover": "npm run lint && npm run build && npm run cover!",
+    "coveralls": "cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v",
+    "report": "open ./test/coverage/lcov-report/index.html"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    },
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/lib",
+      "<rootDir>/test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "/test/.*\\.(spec|test)\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "testPathIgnorePatterns": [
+      "/backup/",
+      "/coverage/"
+    ],
+    "collectCoverageFrom": [
+      "src/Tilo.ts"
+    ],
+    "coverageDirectory": "./test/coverage"
+  },
+  "keywords": [
+    "console",
+    "terminal",
+    "command",
+    "print",
+    "log",
+    "error",
+    "info",
+    "verbose",
+    "debug",
+    "trace",
+    "utility",
+    "json",
+    "string",
+    "stream",
+    "typescript"
+  ],
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "ci-info": "^2.0.0",
+    "fast-safe-stringify": "^2.0.6",
+    "node-emoji": "^1.8.1",
+    "table": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/ansi-styles": "^3.2.1",
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.18",
+    "@types/node-emoji": "^1.8.1",
+    "docma": "^3.2.2",
+    "jest": "^24.0.0",
+    "jest-cli": "^24.0.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.3",
+    "snyk": "^1.122.4",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.4"
+  }
+}
