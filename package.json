@@ -23,9 +23,9 @@
     "lint": "tslint --project ./",
     "build": "npm run lint && npm run clean && mkdirp ./lib && tsc",
     "test!": "jest --verbose --no-cache --runInBand",
-    "test": "npm run lint && npm run build && npm run test!",
+    "test": "mkdirp ./test/tmp && npm run lint && npm run build && npm run test!",
     "cover!": "npm run lint && jest --coverage --verbose --no-cache --runInBand",
-    "cover": "npm run lint && npm run build && npm run cover!",
+    "cover": "mkdirp ./test/tmp && npm run lint && npm run build && npm run cover!",
     "coveralls": "cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v",
     "report": "open ./test/coverage/lcov-report/index.html"
   },
