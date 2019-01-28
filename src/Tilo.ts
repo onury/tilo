@@ -482,7 +482,9 @@ class Tilo extends EventEmitter {
     emoji(name: string): string {
         const s = name.trim().replace(/(^:|:$)/g, '');
         if (this.isInCI || !this.styles) return ':' + s + ':';
-        return s ? emoji.get(`${s}`) : /* istanbul ignore next */ name;
+        // below is actually tested but emoji is disabled in CI env.
+        /* istanbul ignore next */
+        return s ? emoji.get(`${s}`) : name;
     }
 
     /**
@@ -498,7 +500,9 @@ class Tilo extends EventEmitter {
      *  Plays system beep if the `info` level stream is TTY and called from a
      *  non-CI environment.
      */
+    /* istanbul ignore next */
     beep(): void {
+        // disabled in CI env.
         if (!this.enabled || this.isInCI) return;
         const stream: any = this.getStream(LogLevel.INFO);
         /* istanbul ignore next */
