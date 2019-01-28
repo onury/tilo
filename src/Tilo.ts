@@ -479,11 +479,11 @@ class Tilo extends EventEmitter {
      *  @example
      *  tilo.info('All done!', tilo.emoji('punch'));
      */
+    /* istanbul ignore next */
     emoji(name: string): string {
+        // below is actually tested but emoji is disabled in CI env.
         const s = name.trim().replace(/(^:|:$)/g, '');
         if (this.isInCI || !this.styles) return ':' + s + ':';
-        // below is actually tested but emoji is disabled in CI env.
-        /* istanbul ignore next */
         return s ? emoji.get(`${s}`) : name;
     }
 
