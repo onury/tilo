@@ -64,8 +64,8 @@
     "console",
     "terminal",
     "command",
-    "print",
     "log",
+    "logger",
     "error",
     "info",
     "verbose",
@@ -75,6 +75,10 @@
     "json",
     "string",
     "stream",
+    "stdout",
+    "stderr",
+    "print",
+    "write",
     "typescript"
   ],
   "dependencies": {
