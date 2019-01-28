@@ -92,6 +92,7 @@
     },
     "src": [
         "./lib/**/*.js",
+        "./docs/*.jsdoc",
         // "./CHANGELOG.md",
         {
             "guide": "./README.md"
