@@ -12,7 +12,7 @@
 
 > © 2019, Onur Yıldırım ([@onury](https://github.com/onury)). MIT License.
 
-Tiny logger with styles and levels for Node/TypeScript.
+**Tiny logger** with styles and levels for Node/TypeScript.  
 
 `npm i tilo`
 
@@ -29,6 +29,8 @@ import { Tilo } from 'tilo';
 const tilo = new Tilo({ level: 'debug' });
 tilo.info('Output colorful logs with date/time and level info.');
 ```
+
+Read the concise [**API reference**](https://onury.io/tilo/api). 
 
 ### Formatted Output
 
