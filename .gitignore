@@ -1,6 +1,7 @@
 /backup/
 /node_modules/
 /docs/
+/test/coverage/
 npm-debug.log
 tmp
 TODO.md
