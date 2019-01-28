@@ -6,12 +6,12 @@ import { LogLevel, LogPriority } from './';
 interface ILogInfo {
     /**
      *  Log level of the corresponding log.
-     *  @type {LogLevel}
+     *  @type {Tilo.Level}
      */
     level: LogLevel;
     /**
      *  Priority of the log level.
-     *  @type {LogPriority}
+     *  @type {Tilo.Priority}
      */
     priority: LogPriority;
     /**

@@ -10,13 +10,13 @@ interface ILogOptions {
      */
     enabled?: boolean;
     /**
-     *  Log level to be set for the logger.
-     *  @type {LogLevel}
+     *  Log level to be set for the logger. Default: `Tilo.Level.DEBUG`
+     *  @type {Tilo.Level}
      */
     level?: LogLevel;
     /**
-     *  The formatter function for styling and coloring the log output.
-     *  If not set, the default formatter function will be used.
+     *  The formatter function for styling and coloring the log output. If not
+     *  set, the default formatter function will be used.
      *  @type {LogFormatFn}
      */
     format?: LogFormatFn;

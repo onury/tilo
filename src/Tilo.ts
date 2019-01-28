@@ -116,8 +116,8 @@ class Tilo extends EventEmitter {
     /**
      *  Gets the priority number of the given log level.
      *  Lowest number has the highest priority.
-     *  @param {LogLevel} level - Log level.
-     *  @returns {LogPriority}
+     *  @param {Tilo.Level} level - Log level.
+     *  @returns {Tilo.Priority}
      */
     static getPriorityOf(level: LogLevel): LogPriority {
         return LogPriority[level.toUpperCase()];
@@ -145,7 +145,7 @@ class Tilo extends EventEmitter {
 
     /**
      *  Gets or sets the logging level.
-     *  @type {LogLevel}
+     *  @type {Tilo.Level}
      */
     get level(): LogLevel {
         return this.$.level;
@@ -158,7 +158,7 @@ class Tilo extends EventEmitter {
     /**
      *  Gets the priority of the current logging level.
      *  Lowest number is the highest priority.
-     *  @type {LogPriority}
+     *  @type {Tilo.Priority}
      *  @readonly
      */
     get priority(): LogPriority {
@@ -219,7 +219,9 @@ class Tilo extends EventEmitter {
     }
 
     /**
-     *  Gets the Chalk instance used for styling.
+     *  Gets the {@link https://github.com/chalk/chalk|Chalk} instance used for
+     *  styling.
+     *
      *  <blockquote>Note that if `styles` is disabled, this has no affect.</blockquote>
      *  @type {Chalk}
      *  @readonly
@@ -281,7 +283,7 @@ class Tilo extends EventEmitter {
 
     /**
      *  Gets the stream for the given log level.
-     *  @param {LogLevel} level - Target log level.
+     *  @param {Tilo.Level} level - Target log level.
      *  @returns {NodeJS.WriteStream}
      */
     getStream(level: LogLevel): NodeJS.WritableStream {
@@ -421,7 +423,7 @@ class Tilo extends EventEmitter {
 
     /**
      *  Writes the log with the given level to the corresponding stream.
-     *  @param {LogLevel} level - Log level to be used.
+     *  @param {Tilo.Level} level - Log level to be used.
      *  @param {...any} args - Arguments to be logged.
      *
      *  @example
@@ -518,7 +520,7 @@ class Tilo extends EventEmitter {
     /**
      *  Gets a log information object for the given log argument(s).
      *  @protected
-     *  @param {LogLevel} level - Level of the given log.
+     *  @param {Tilo.Level} level - Level of the given log.
      *  @param {any[]} args - Log argument(s).
      *  @returns {ILogInfo}
      */
