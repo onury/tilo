@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { Chalk } from 'chalk';
 import { ILogInfo, ILogLevelStreams, ILogOptions, LogEvent, LogFormatFn, LogLevel, LogPriority } from './';
 /**
@@ -43,24 +43,26 @@ declare class Tilo extends EventEmitter {
      *  @type {LogFormatFn}
      *  @readonly
      */
-    static readonly defaultFormat: LogFormatFn;
+    static get defaultFormat(): LogFormatFn;
     /**
      *  Specifies whether logs are enabled.
      *  @type {Boolean}
      */
-    enabled: boolean;
+    get enabled(): boolean;
+    set enabled(value: boolean);
     /**
      *  Gets or sets the logging level.
      *  @type {Tilo.Level}
      */
-    level: LogLevel;
+    get level(): LogLevel;
+    set level(value: LogLevel);
     /**
      *  Gets the priority of the current logging level.
      *  Lowest number is the highest priority.
      *  @type {Tilo.Priority}
      *  @readonly
      */
-    readonly priority: LogPriority;
+    get priority(): LogPriority;
     /**
      *  Gets or sets a function that returns a formatted log string.
      *  @type {LogFormatFn}
@@ -76,13 +78,15 @@ declare class Tilo extends EventEmitter {
      *  };
      *  tilo.error('Formatted logs...');
      */
-    format: LogFormatFn;
+    get format(): LogFormatFn;
+    set format(value: LogFormatFn);
     /**
      *  Specifies whether styles and colors are enabled. Useful if you do not
      *  want to change the formatter function but still disable styles.
      *  @type {string}
      */
-    styles: boolean;
+    get styles(): boolean;
+    set styles(value: boolean);
     /**
      *  If set to `true`, stack lines with no file-path in them will be removed.
      *
@@ -91,7 +95,8 @@ declare class Tilo extends EventEmitter {
      *  filtered out. Default: `false`
      *  @type {boolean|string[]}
      */
-    cleanStack: boolean | string[];
+    get cleanStack(): boolean | string[];
+    set cleanStack(value: boolean | string[]);
     /**
      *  Gets the {@link https://github.com/chalk/chalk|Chalk} instance used for
      *  styling.
@@ -100,7 +105,7 @@ declare class Tilo extends EventEmitter {
      *  @type {Chalk}
      *  @readonly
      */
-    readonly chalk: Chalk;
+    get chalk(): Chalk;
     /**
      *  Gets or sets the hash-map that defines a stream for each log level. Set
      *  this to an individual `NodeJS.WriteStream` to set it as default for
@@ -122,13 +127,14 @@ declare class Tilo extends EventEmitter {
      *      error: process.stderr
      *  };
      */
-    streams: ILogLevelStreams;
+    get streams(): ILogLevelStreams;
+    set streams(value: ILogLevelStreams);
     /**
      *  Specifies whether we are currently in a CI environment.
      *  @type {boolean}
      *  @readonly
      */
-    readonly isInCI: boolean;
+    get isInCI(): boolean;
     /**
      *  Gets the stream for the given log level.
      *  @param {Tilo.Level} level - Target log level.
