@@ -1,9 +1,9 @@
 // core modules
-import * as EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import * as util from 'util';
 
 // dep modules
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import { Chalk } from 'chalk';
 import * as ci from 'ci-info';
 import * as emoji from 'node-emoji';
@@ -32,7 +32,7 @@ const defaultMsgColor: any = {
     ok: 'green'
 };
 
-const disabledChalk: Chalk = new chalk.constructor({ enabled: false });
+const disabledChalk: Chalk = new chalk.Instance({ level: 0 });
 const reStackLines = /([ \t]+at.*?)(?:([^:/\\( ]+):(\d+):(\d+))?(\)?)([\r\n]|$)/g;
 
 const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: Chalk): string => {
@@ -48,7 +48,7 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: Chalk): string => {
     const meta = datetime + '  ' + level + '  ';
 
     const text = info.text;
-    if (clk.enabled) {
+    if (clk.level > 0) {
         const m = text.match(/([\r\n][ \t]+at[\s\S]*$)/);
         if (m) {
             const p = text.split(/([\r\n][ \t]+at.*)/g);
