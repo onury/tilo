@@ -12,7 +12,7 @@
   ],
   "types": "./lib/index.d.ts",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "scripts": {
     "docs": "docma",
@@ -82,26 +82,26 @@
     "typescript"
   ],
   "dependencies": {
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "ci-info": "^2.0.0",
-    "fast-safe-stringify": "^2.0.6",
-    "node-emoji": "^1.8.1",
-    "table": "^5.2.2"
+    "fast-safe-stringify": "^2.0.7",
+    "node-emoji": "^1.10.0",
+    "table": "^5.4.6"
   },
   "devDependencies": {
     "@types/ansi-styles": "^3.2.1",
-    "@types/jest": "^23.3.13",
-    "@types/node": "^10.12.18",
+    "@types/jest": "^25.1.1",
+    "@types/node": "^13.5.3",
     "@types/node-emoji": "^1.8.1",
-    "coveralls": "^3.0.2",
+    "coveralls": "^3.0.9",
     "docma": "^3.2.2",
-    "jest": "^24.0.0",
-    "jest-cli": "^24.0.0",
-    "mkdirp": "^0.5.1",
-    "rimraf": "^2.6.3",
-    "snyk": "^1.122.4",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
-    "typescript": "^3.2.4"
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0",
+    "mkdirp": "^1.0.3",
+    "rimraf": "^3.0.1",
+    "snyk": "^1.290.0",
+    "ts-jest": "^25.1.0",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   }
 }
