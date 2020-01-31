@@ -13,7 +13,7 @@
         "adjacent-overload-signatures": true,
         "ban-types": [true, ["Object", "Use {} instead."], ["String"]],
         "member-access": [true, "no-public"],
-        "member-ordering": [true, {"order": "fields-first"}],
+        "member-ordering": [false, {"order": "fields-first"}],
         "no-any": false,
         "no-empty-interface": false,
         "no-import-side-effect": true,
