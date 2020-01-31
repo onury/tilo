@@ -7,10 +7,10 @@
 [![release](https://img.shields.io/github/release/onury/tilo.svg?style=flat-square)](https://github.com/onury/tilo)
 [![dependencies](https://david-dm.org/onury/tilo.svg?style=flat-square)](https://david-dm.org/onury/tilo)
 [![license](http://img.shields.io/npm/l/tilo.svg?style=flat-square)](https://github.com/onury/tilo/blob/master/LICENSE)
-[![maintained](https://img.shields.io/maintenance/yes/2019.svg?style=flat-square)](https://github.com/onury/tilo/graphs/commit-activity)
+[![maintained](https://img.shields.io/maintenance/yes/2020.svg?style=flat-square)](https://github.com/onury/tilo/graphs/commit-activity)
 [![TypeScript](https://img.shields.io/badge/written%20in-%20TypeScript%20-6575ff.svg?style=flat-square)](https://www.typescriptlang.org)
 
-> © 2019, Onur Yıldırım ([@onury](https://github.com/onury)). MIT License.
+> © 2020, Onur Yıldırım ([@onury](https://github.com/onury)). MIT License.
 
 **Tiny logger** with styles and levels for Node/TypeScript.  
 
@@ -200,6 +200,10 @@ tilo.on('log', logInfo => {
 ```
 
 ## Changelog
+
+**v2.0.0** (2020-01-31)
+- Drop support for Node v6.
+- Update dependencies to latest version.
 
 **v1.0.0** (2019-01-28)
 - initial release.
