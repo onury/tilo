@@ -5,12 +5,10 @@
 [![Coverage Status](https://img.shields.io/coveralls/github/onury/tilo/master.svg?style=flat-square)](https://coveralls.io/github/onury/tilo?branch=master)
 [![npm](http://img.shields.io/npm/v/tilo.svg?style=flat-square)](https://www.npmjs.com/package/tilo)
 [![release](https://img.shields.io/github/release/onury/tilo.svg?style=flat-square)](https://github.com/onury/tilo)
-[![dependencies](https://david-dm.org/onury/tilo.svg?style=flat-square)](https://david-dm.org/onury/tilo)
 [![license](http://img.shields.io/npm/l/tilo.svg?style=flat-square)](https://github.com/onury/tilo/blob/master/LICENSE)
-[![maintained](https://img.shields.io/maintenance/yes/2020.svg?style=flat-square)](https://github.com/onury/tilo/graphs/commit-activity)
 [![TypeScript](https://img.shields.io/badge/written%20in-%20TypeScript%20-6575ff.svg?style=flat-square)](https://www.typescriptlang.org)
 
-> © 2020, Onur Yıldırım ([@onury](https://github.com/onury)). MIT License.
+> © 2021, Onur Yıldırım ([@onury](https://github.com/onury)). MIT License.
 
 **Tiny logger** with styles and levels for Node/TypeScript.  
 
