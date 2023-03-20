@@ -32,7 +32,7 @@ const helper = {
     },
 
     identityFormat(info: ILogInfo): string { // , chalk: Chalk
-        return info.text;
+        return info.text ?? '';
     },
 
     safeStringify(o: any, pretty ?: boolean): string {

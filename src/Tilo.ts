@@ -550,7 +550,7 @@ class Tilo extends EventEmitter {
             timestamp: d.getTime(),
             date,
             time,
-            text: util.format.apply(null, args),
+            text: util.format.apply(util, args),
             args,
             method
         };
@@ -569,8 +569,10 @@ class Tilo extends EventEmitter {
             // we'll pass logInfo to formatter and emitter...
             // format the output / or not...
             const log = useFormatter
-                ? (this.format || helper.identityFormat).apply(null, [logInfo, this.chalk])
-                : logInfo.text;
+                ? this.format
+                    ? this.format(logInfo, this.chalk)
+                    : helper.identityFormat(logInfo)
+                : logInfo.text ?? '';
             // write the log to corresponding stream of the log level
             stream.write(log);
         }
