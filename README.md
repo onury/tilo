@@ -199,6 +199,9 @@ tilo.on('log', logInfo => {
 
 ## Changelog
 
+**v2.0.1** (2023-03-20)
+- Handle edge-case inputs.
+
 **v2.0.0** (2020-01-31)
 - Drop support for Node v6.
 - Update dependencies to latest version.
