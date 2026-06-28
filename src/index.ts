@@ -1,9 +1,10 @@
 // order is important here
-export { ILogLevelStreams } from './ILogLevelStreams';
-export { LogLevel } from './LogLevel';
-export { LogPriority } from './LogPriority';
-export { LogEvent } from './LogEvent';
-export { ILogInfo } from './ILogInfo';
-export { LogFormatFn } from './LogFormatFn';
-export { ILogOptions } from './ILogOptions';
-export { Tilo } from './Tilo';
+
+export type { ILogInfo } from './ILogInfo.js';
+export type { ILogLevelStreams } from './ILogLevelStreams.js';
+export type { ILogOptions } from './ILogOptions.js';
+export { LogEvent } from './LogEvent.js';
+export type { LogFormatFn } from './LogFormatFn.js';
+export { LogLevel } from './LogLevel.js';
+export { LogPriority } from './LogPriority.js';
+export { Tilo } from './Tilo.js';

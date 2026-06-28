@@ -1,5 +1,5 @@
-import { Chalk } from 'chalk';
-import { ILogInfo } from './';
+import type { ChalkInstance } from 'chalk';
+import type { ILogInfo } from './index.js';
 
 /**
  *  Log format function.
@@ -8,6 +8,6 @@ import { ILogInfo } from './';
  *  for styling and coloring the output.
  *  @returns {string}
  */
-type LogFormatFn = (info: ILogInfo, chalk: Chalk) => string;
+type LogFormatFn = (info: ILogInfo, chalk: ChalkInstance) => string;
 
-export { LogFormatFn };
+export type { LogFormatFn };

@@ -1,64 +1,47 @@
 {
   "name": "tilo",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Tiny logger with styles and levels for Node/TypeScript.",
-  "main": "lib/index.js",
-  "repository": "onury/tilo",
-  "author": "Onur Yıldırım <onur@cutepilot.com>",
+  "type": "module",
   "license": "MIT",
+  "author": "Onur Yıldırım <onur@cutepilot.com>",
+  "homepage": "https://onury.io/tilo",
+  "repository": "onury/tilo",
+  "bugs": {
+    "url": "https://github.com/onury/tilo/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "files": [
-    "lib/",
+    "lib",
     "LICENSE"
   ],
-  "types": "./lib/index.d.ts",
-  "engines": {
-    "node": ">=8"
-  },
   "scripts": {
-    "docs": "docma",
-    "docs:serve": "docma && docma serve",
-    "vuls": "snyk test",
-    "deps": "npm-check -u && snyk test",
-    "clean": "rimraf ./lib",
-    "lint": "tslint --project ./",
-    "build": "npm run lint && npm run clean && mkdirp ./lib && tsc",
-    "test!": "jest --verbose --no-cache --runInBand",
-    "test": "mkdirp ./test/tmp && npm run lint && npm run build && npm run test!",
-    "cover!": "npm run lint && jest --coverage --verbose --no-cache --runInBand",
-    "cover": "mkdirp ./test/tmp && npm run lint && npm run build && npm run cover!",
-    "coveralls": "cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v",
-    "report": "open ./test/coverage/lcov-report/index.html"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "globals": {
-      "ts-jest": {
-        "diagnostics": false
-      }
-    },
-    "roots": [
-      "<rootDir>/src",
-      "<rootDir>/lib",
-      "<rootDir>/test"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "/test/.*\\.(spec|test)\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "testPathIgnorePatterns": [
-      "/backup/",
-      "/coverage/"
-    ],
-    "collectCoverageFrom": [
-      "src/Tilo.ts"
-    ],
-    "coverageDirectory": "./test/coverage"
+    "lint": "biome check src test",
+    "format": "biome check --write src test",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "pretest": "npm run lint && npm run typecheck",
+    "test": "vitest run",
+    "cover": "vitest run --coverage",
+    "mutation": "stryker run",
+    "docs": "npm --prefix site run build",
+    "docs:dev": "npm --prefix site run dev",
+    "docs:host": "npm --prefix site run dev:host",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "console",
@@ -79,29 +62,25 @@
     "stderr",
     "print",
     "write",
-    "typescript"
+    "typescript",
+    "esm"
   ],
   "dependencies": {
-    "chalk": "^3.0.0",
-    "ci-info": "^2.0.0",
-    "fast-safe-stringify": "^2.0.7",
-    "node-emoji": "^1.10.0",
-    "table": "^5.4.6"
+    "chalk": "^5.6.2",
+    "ci-info": "^4.4.0",
+    "fast-safe-stringify": "^2.1.1",
+    "node-emoji": "^2.2.0",
+    "table": "^6.9.0"
   },
   "devDependencies": {
-    "@types/ansi-styles": "^3.2.1",
-    "@types/jest": "^25.1.1",
-    "@types/node": "^13.5.3",
-    "@types/node-emoji": "^1.8.1",
-    "coveralls": "^3.0.9",
-    "docma": "^3.2.2",
-    "jest": "^25.1.0",
-    "jest-cli": "^25.1.0",
-    "mkdirp": "^1.0.3",
-    "rimraf": "^3.0.1",
-    "snyk": "^1.290.0",
-    "ts-jest": "^25.1.0",
-    "tslint": "^6.0.0",
-    "typescript": "^3.7.5"
+    "@biomejs/biome": "^2.5.1",
+    "@stryker-mutator/core": "^9.6.1",
+    "@stryker-mutator/vitest-runner": "^9.6.1",
+    "@types/node": "^26.0.1",
+    "@vitest/coverage-istanbul": "^4.1.9",
+    "biome-config-oy": "^1.1.0",
+    "tsconfig-oy": "^2.0.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }
