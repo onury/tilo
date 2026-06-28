@@ -10,7 +10,7 @@
   <a href="https://github.com/onury/tilo/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tilo.svg?style=flat&color=blue" alt="license" /></a>
 </p>
 
-> This module is **ESM** 🔆. Please [**read this**](https://gist.github.com/onury/d3f3d765d7db2e8b2d050d14315f2ac7).
+> This module is **ESM** 🔆. Please [**read this**](https://gist.github.com/onury/d3f3d765d7db2e8b2d050d14315f2ac7). Requires **Node ≥ 22**.
 
 **Tiny logger** with styles and levels for Node.js / TypeScript — colorful, leveled output with per-level streams, a custom formatter, safe stringify, tables, traces, and a `log` event.
 
@@ -26,7 +26,12 @@ npm i tilo
 import { Tilo } from 'tilo';
 
 const tilo = new Tilo({ level: 'debug' });
-tilo.info('Output colorful logs with date/time and level info.');
+
+tilo.error('Something failed.');
+tilo.warn('Heads up.');
+tilo.info('Colorful, leveled output with date & time.');
+tilo.debug('Visible because the level is "debug".');
+tilo.silly('Hidden — below the active level.');
 ```
 
 ## Guide
@@ -38,7 +43,7 @@ Provide a custom function that returns a formatted string:
 ```ts
 tilo.format = (info, chalk) => {
   const text = `${info.time} ${info.level.toUpperCase()}\t${info.text}`;
-  return info.level === Tilo.Level.ERROR ? chalk.red(text) : chalk.white(text);
+  return info.level === 'error' ? chalk.red(text) : chalk.white(text);
 };
 tilo.info('Custom formatted log…'); // —» 15:30:43 INFO   Custom formatted log…
 ```
@@ -50,6 +55,48 @@ Log safely-stringified objects (circular references handled). `s()` stringifies 
 ```ts
 tilo.info(tilo.s({ key: 'stringify' }));
 tilo.warn(tilo.sp({ key: 'stringify pretty' }));
+```
+
+### Per-level streams
+
+Route each level to its own stream — e.g. errors to `stderr`, everything else to `stdout`:
+
+```ts
+const tilo = new Tilo({
+  streams: { default: process.stdout, error: process.stderr },
+});
+
+// a single stream is used as the default for every level:
+tilo.streams = process.stdout;
+```
+
+### Tables
+
+Print a visual table from an array of rows:
+
+```ts
+tilo.table([
+  ['Name', 'Score'],
+  ['Ada', '99'],
+  ['Linus', '95'],
+]);
+```
+
+### Clean stacks
+
+Trim noise from error stacks — drop file-path-less frames, or filter by keyword:
+
+```ts
+const tilo = new Tilo({ cleanStack: true });            // drop internal/native frames
+const t2 = new Tilo({ cleanStack: ['node_modules'] });  // drop frames matching keywords
+```
+
+### Emoji
+
+Resolve an emoji by name (falls back to the `:name:` text on CI or when styles are off):
+
+```ts
+tilo.info('All done!', tilo.emoji('rocket'));
 ```
 
 ### Configuration
@@ -93,6 +140,27 @@ tilo.on('log', (logInfo) => {
   }
 });
 ```
+
+## API
+
+Beyond the level methods above:
+
+| Member | Returns | Description |
+| --- | --- | --- |
+| `log(level, …args)` | `void` | Log at `level`; falls back to `INFO` if `level` is invalid. |
+| `table(data, options?)` | `void` | Print a visual table (INFO). |
+| `dir(obj, options?)` | `void` | Inspect an object and log it (DEBUG). |
+| `trace(…args)` | `void` | Log with a stack trace to the current line (DEBUG). |
+| `newline()` | `void` | Write a bare newline (no meta/format). |
+| `beep()` | `void` | System beep, if the INFO stream is a TTY and not in CI. |
+| `s(…args)` · `sp(…args)` | `string` | Safe stringify / pretty safe-stringify (handles circular refs). |
+| `emoji(name)` | `string` | Resolve an emoji by name. |
+| `getStream(level)` | `WritableStream` | The stream configured for a level. |
+| `isValidLevel(level)` | `boolean` | Whether a string is a valid level. |
+| `Tilo.getPriorityOf(level)` | `LogPriority` | *(static)* numeric priority of a level. |
+| `Tilo.defaultFormat` | `LogFormatFn` | *(static)* the built-in formatter — assign back to `format` to restore it. |
+
+Every constructor option is also a live `get`/`set` accessor (`enabled`, `level`, `format`, `styles`, `streams`, `cleanStack`), plus the read-only `priority`, `chalk`, and `isInCI`.
 
 ## Security & Quality
 
