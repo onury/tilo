@@ -72,18 +72,17 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
 };
 
 /**
- *  `Tilo` class. A customizable logger and emitter with styles and levels.
- *  @class
- *  @author Onur Yıldırım <onur@cutepilot.com>
- *  @license MIT
- *  @see {@link https://github.com/onury/tilo|GitHub Repo}
+ *  A customizable logger and event emitter with styles and levels.
  *
- *  @extends EventEmitter
+ *  @remarks
+ *  Extends Node's `EventEmitter`, emitting the {@link LogEvent.LOG} event on
+ *  every log attempt.
+ *
+ *  @see {@link https://github.com/onury/tilo | GitHub Repo}
  */
 class Tilo extends EventEmitter {
   /**
    *  Inner storage.
-   *  @protected
    */
   protected $: {
     enabled?: boolean;
@@ -97,8 +96,9 @@ class Tilo extends EventEmitter {
   };
 
   /**
-   *  Initializes a new instance of `Tilo` class with the given options.
-   *  @param {ILogOptions} [options] - Logging options.
+   *  Initializes a new instance of the {@link Tilo} class with the given
+   *  options.
+   *  @param options - Logging options.
    */
   constructor(options?: ILogOptions) {
     super(); // EventEmitter
@@ -114,18 +114,18 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Gets the priority number of the given log level.
-   *  Lowest number has the highest priority.
-   *  @param {Tilo.Level} level - Log level.
-   *  @returns {Tilo.Priority}
+   *  Gets the priority number of the given log level. The lowest number has
+   *  the highest priority.
+   *  @param level - Log level.
+   *  @returns The priority of the given level.
    */
   static getPriorityOf(level: LogLevel): LogPriority {
     return LogPriority[level.toUpperCase()];
   }
 
   /**
-   *  Gets the default format function. You can use this to re-set `#format`.
-   *  @type {LogFormatFn}
+   *  Gets the default format function. You can use this to re-set
+   *  {@link Tilo.format}.
    *  @readonly
    */
   static get defaultFormat(): LogFormatFn {
@@ -133,8 +133,7 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Specifies whether logs are enabled.
-   *  @type {Boolean}
+   *  Gets or sets whether logs are enabled.
    */
   get enabled(): boolean {
     return this.$.enabled!;
@@ -144,8 +143,7 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Gets or sets the logging level.
-   *  @type {Tilo.Level}
+   *  Gets or sets the logging level. See {@link LogLevel}.
    */
   get level(): LogLevel {
     return this.$.level!;
@@ -156,9 +154,8 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Gets the priority of the current logging level.
-   *  Lowest number is the highest priority.
-   *  @type {Tilo.Priority}
+   *  Gets the priority of the current logging level. The lowest number is the
+   *  highest priority. See {@link LogPriority}.
    *  @readonly
    */
   get priority(): LogPriority {
@@ -166,8 +163,8 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Gets or sets a function that returns a formatted log string.
-   *  @type {LogFormatFn}
+   *  Gets or sets a function that returns a formatted log string. See
+   *  {@link LogFormatFn}.
    *
    *  @example
    *  const tilo = new Tilo();
@@ -188,9 +185,8 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Specifies whether styles and colors are enabled. Useful if you do not
+   *  Gets or sets whether styles and colors are enabled. Useful if you do not
    *  want to change the formatter function but still disable styles.
-   *  @type {string}
    */
   get styles(): boolean {
     return this.$.styles!;
@@ -207,7 +203,6 @@ class Tilo extends EventEmitter {
    *  You can also pass a list of case-sensitive keywords to be ignored within
    *  the error stacks. Stack lines with any of these keywords in them will be
    *  filtered out. Default: `false`
-   *  @type {boolean|string[]}
    */
   get cleanStack(): boolean | string[] {
     return this.$.cleanStack!;
@@ -217,11 +212,11 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Gets the {@link https://github.com/chalk/chalk|Chalk} instance used for
+   *  Gets the {@link https://github.com/chalk/chalk | Chalk} instance used for
    *  styling.
    *
-   *  <blockquote>Note that if `styles` is disabled, this has no affect.</blockquote>
-   *  @type {Chalk}
+   *  @remarks
+   *  If `styles` is disabled, this has no effect.
    *  @readonly
    */
   get chalk(): ChalkInstance {
@@ -232,11 +227,10 @@ class Tilo extends EventEmitter {
    *  Gets or sets the hash-map that defines a stream for each log level. Set
    *  this to an individual `NodeJS.WriteStream` to set it as default for
    *  every log level. By default, the default stream is set to
-   *  `process.stdout`.
-   *  @type {ILogLevelStreams}
+   *  `process.stdout`. See {@link ILogLevelStreams}.
    *
-   *  @throws {TypeError} - If `default` stream is not specified implicitly or
-   *  explicitly.
+   *  @throws {@link TypeError} if the `default` stream is not specified
+   *  implicitly or explicitly.
    *
    *  @example
    *  // output all levels to stdout
@@ -272,7 +266,6 @@ class Tilo extends EventEmitter {
 
   /**
    *  Specifies whether we are currently in a CI environment.
-   *  @type {boolean}
    *  @readonly
    */
   get isInCI(): boolean {
@@ -281,8 +274,8 @@ class Tilo extends EventEmitter {
 
   /**
    *  Gets the stream for the given log level.
-   *  @param {Tilo.Level} level - Target log level.
-   *  @returns {NodeJS.WriteStream}
+   *  @param level - Target log level.
+   *  @returns The writable stream for the given level.
    */
   getStream(level: LogLevel): NodeJS.WritableStream {
     return this.$.streams![level] || this.$.streams!.default!;
@@ -290,8 +283,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes an `error` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
-   *  @emits Tilo~log
+   *  @param args - Arguments to be logged.
    */
   error(...args: any[]): void {
     if (!this.enabled) return;
@@ -301,7 +293,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes a `warn` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   warn(...args: any[]): void {
     if (!this.enabled) return;
@@ -311,7 +303,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes an `info` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   info(...args: any[]): void {
     if (!this.enabled) return;
@@ -320,9 +312,9 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Alias of `#info()` method. Might be useful for styling/formatting
-   *  successful result logs.
-   *  @param {...any} args - Arguments to be logged.
+   *  Alias of the {@link Tilo.info} method. Might be useful for
+   *  styling/formatting successful result logs.
+   *  @param args - Arguments to be logged.
    */
   ok(...args: any[]): void {
     if (!this.enabled) return;
@@ -331,8 +323,9 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Writes an `info` log to the corresponding stream, without any styles or formatting.
-   *  @param {...any} args - Arguments to be logged.
+   *  Writes an `info` log to the corresponding stream, without any styles or
+   *  formatting.
+   *  @param args - Arguments to be logged.
    */
   plain(...args: any[]): void {
     if (!this.enabled) return;
@@ -342,7 +335,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes a `verbose` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   verbose(...args: any[]): void {
     if (!this.enabled) return;
@@ -352,7 +345,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes a `debug` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   debug(...args: any[]): void {
     if (!this.enabled) return;
@@ -361,10 +354,10 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Writes a `debug` log to the corresponding stream; by inspecting
-   *  the given object.
-   *  @param {any} object - Object to be inspected.
-   *  @param {util.InspectOptions} options - Inspect options.
+   *  Writes a `debug` log to the corresponding stream, by inspecting the given
+   *  object.
+   *  @param object - Object to be inspected.
+   *  @param options - Inspect options (`util.InspectOptions`).
    */
   dir(object: any, options?: any): void {
     if (!this.enabled) return;
@@ -379,7 +372,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes a `trace` log to the corresponding (debug) stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   trace(...args: any[]): void {
     if (!this.enabled) return;
@@ -397,9 +390,9 @@ class Tilo extends EventEmitter {
   /**
    *  Prints a table from the given data to the corresponding (info level)
    *  stream.
-   *  @param {any[]} data - Table data to be printed. Pass an array of arrays
-   *  for rows and columns.
-   *  @param {any} [options] - Table options.
+   *  @param data - Table data to be printed. Pass an array of arrays for rows
+   *  and columns.
+   *  @param options - Table options.
    */
   table(data: any[], options?: any): void {
     if (!this.enabled) return;
@@ -411,7 +404,7 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes a `silly` log to the corresponding stream.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param args - Arguments to be logged.
    */
   silly(...args: any[]): void {
     if (!this.enabled) return;
@@ -421,8 +414,8 @@ class Tilo extends EventEmitter {
 
   /**
    *  Writes the log with the given level to the corresponding stream.
-   *  @param {Tilo.Level} level - Log level to be used.
-   *  @param {...any} args - Arguments to be logged.
+   *  @param level - Log level to be used.
+   *  @param args - Arguments to be logged.
    *
    *  @example
    *  // outputs in warning level logs:
@@ -439,10 +432,10 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Utility method to stringify the given argument(s) safely.
-   *  This will automatically handle circular references, if any.
-   *  @param {...any} args - Argument(s) to be stringified.
-   *  @returns {string}
+   *  Utility method to stringify the given argument(s) safely. This
+   *  automatically handles circular references, if any.
+   *  @param args - Argument(s) to be stringified.
+   *  @returns The stringified argument(s).
    *
    *  @example
    *  tilo.debug('Stringify:', tilo.s(obj));
@@ -452,10 +445,10 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Utility method to pretty-stringify the given argument(s) safely.
-   *  This will automatically handle circular references, if any.
-   *  @param {...any} args - Argument(s) to be stringified.
-   *  @returns {string}
+   *  Utility method to pretty-stringify the given argument(s) safely. This
+   *  automatically handles circular references, if any.
+   *  @param args - Argument(s) to be stringified.
+   *  @returns The pretty-stringified argument(s).
    *
    *  @example
    *  tilo.debug('Stringify pretty:', tilo.sp(obj));
@@ -466,13 +459,16 @@ class Tilo extends EventEmitter {
 
   /**
    *  Gets the emoji code for the given name (on terminals/streams that
-   *  support it). For emoji names, see {@link www.emoji-cheat-sheet.com}.
+   *  support it). For emoji names, see
+   *  {@link https://www.webfx.com/tools/emoji-cheat-sheet/ | the emoji cheat
+   *  sheet}.
    *
-   *  <blockquote>Note that this method will return the emoji name string, on CI
-   *  environments; or if `styles` option is disabled.</blockquote>
+   *  @remarks
+   *  This method returns the emoji name string in CI environments, or if the
+   *  `styles` option is disabled.
    *
-   *  @param {string} name - Name of the emoji.
-   *  @returns {string}
+   *  @param name - Name of the emoji.
+   *  @returns The emoji character, or the emoji name string.
    *
    *  @example
    *  tilo.info('All done!', tilo.emoji('punch'));
@@ -487,8 +483,8 @@ class Tilo extends EventEmitter {
 
   /**
    *  Checks whether the given level is a valid Tilo log level.
-   *  @param {string} level - Level name to be checked.
-   *  @returns {boolean}
+   *  @param level - Level name to be checked.
+   *  @returns Whether the given level is a valid log level.
    */
   isValidLevel(level: string): boolean {
     return Object.keys(LogLevel).some((key: string) => LogLevel[key] === level);
@@ -521,10 +517,10 @@ class Tilo extends EventEmitter {
 
   /**
    *  Gets a log information object for the given log argument(s).
-   *  @protected
-   *  @param {Tilo.Level} level - Level of the given log.
-   *  @param {any[]} args - Log argument(s).
-   *  @returns {ILogInfo}
+   *  @param method - Name of the method that produced the log.
+   *  @param level - Level of the given log.
+   *  @param args - Log argument(s).
+   *  @returns The assembled log information object.
    */
   protected $getLogInfo(method: string, level: LogLevel, args: any[]): ILogInfo {
     const d = new Date();
@@ -557,9 +553,8 @@ class Tilo extends EventEmitter {
   /**
    *  Writes a log message (with the given log information) to the specified
    *  log level stream.
-   *  @protected
-   *  @param {ILogInfo} logInfo - Log message, arguments and other metadata.
-   *  @param {boolean} [useFormatter=true] - Whether to use the formatter.
+   *  @param logInfo - Log message, arguments and other metadata.
+   *  @param useFormatter - Whether to use the formatter. Default: `true`
    */
   protected $write(logInfo: ILogInfo, useFormatter: boolean = true): void {
     const { levelEnabled, stream } = logInfo;
@@ -577,22 +572,8 @@ class Tilo extends EventEmitter {
 
     // if (this.listenerCount(LogEvent.LOG) <= 0) return;
 
-    /**
-     *  Fired when a log is attempted via its corresponding method. The log
-     *  might not be actually written to the stream, if the corresponding
-     *  log level is not enabled. To check this; you can use
-     *  `logInfo.levelEnabled`.
-     *  @event Tilo#log
-     *  @type {ILogInfo}
-     *
-     *  @example
-     *  const tilo = new Tilo();
-     *  tilo.on('log', logInfo => {
-     *      if (logInfo.level === Tilo.Level.ERROR && /\bfatal/i.test(logInfo.text)) {
-     *          // e.g. send email to admin
-     *      }
-     *  });
-     */
+    // Emit the `log` event ({@link LogEvent.LOG}) with the {@link ILogInfo}
+    // object on every log attempt, even when the level is not enabled.
     this.emit(LogEvent.LOG, logInfo);
   }
 }

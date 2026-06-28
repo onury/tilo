@@ -1,55 +1,36 @@
 /**
- *  Enumerates logging levels, prioritized from highest (`error`) to lowest (`silly`).
- *  @enum {string}
- *  @name Tilo.Level
+ *  Enumerates the logging levels, prioritized from highest (`error`) to
+ *  lowest (`silly`). The {@link Tilo} instance only outputs logs at or above
+ *  its configured level. See {@link LogPriority} for the numeric priorities.
  */
 enum LogLevel {
   /**
-   *  Indicates `"error"` logging level. This level should output error logs
-   *  only. Priority: `0` (highest)
-   *  @type {string}
-   *  @name Tilo.Level.ERROR
-   *  @default "error"
+   *  The `"error"` logging level. Outputs error logs only. Priority: `0`
+   *  (highest).
    */
   ERROR = 'error',
   /**
-   *  Indicates `"warn"` logging level. This level should output error and
-   *  warn logs only. Priority: `1`
-   *  @type {string}
-   *  @name Tilo.Level.WARN
-   *  @default "warn"
+   *  The `"warn"` logging level. Outputs error and warn logs. Priority: `1`.
    */
   WARN = 'warn',
   /**
-   *  Indicates `"info"` logging level. This level should output error, warn and
-   *  info logs only. Priority: `2`
-   *  @type {string}
-   *  @name Tilo.Level.INFO
-   *  @default "info"
+   *  The `"info"` logging level. Outputs error, warn and info logs.
+   *  Priority: `2`.
    */
   INFO = 'info',
   /**
-   *  Indicates `"verbose"` logging level. This level should output error,
-   *  warn, info and verbose logs. Priority: `3`
-   *  @type {string}
-   *  @name Tilo.Level.VERBOSE
-   *  @default "verbose"
+   *  The `"verbose"` logging level. Outputs error, warn, info and verbose
+   *  logs. Priority: `3`.
    */
   VERBOSE = 'verbose',
   /**
-   *  Indicates `"debug"` logging level. This level should output error,
-   *  warn, info, verbose and debug logs. Priority: `4`
-   *  @type {string}
-   *  @name Tilo.Level.DEBUG
-   *  @default "debug"
+   *  The `"debug"` logging level. Outputs error, warn, info, verbose and
+   *  debug logs. Priority: `4`.
    */
   DEBUG = 'debug',
   /**
-   *  Indicates `"silly"` logging level. This level should output logs from
-   *  all levels. Priority: `5` (lowest)
-   *  @type {string}
-   *  @name Tilo.Level.SILLY
-   *  @default "silly"
+   *  The `"silly"` logging level. Outputs logs from all levels. Priority: `5`
+   *  (lowest).
    */
   SILLY = 'silly'
 }

@@ -8,7 +8,6 @@
   <a href="https://gist.github.com/onury/d3f3d765d7db2e8b2d050d14315f2ac7"><img src="https://img.shields.io/badge/ESM-F7DF1E?style=flat" alt="ESM" /></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TS-3260C7?style=flat" alt="TS" /></a>
   <a href="https://github.com/onury/tilo/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tilo.svg?style=flat&color=blue" alt="license" /></a>
-  <a href="https://onury.io/tilo"><img src="https://img.shields.io/badge/docs-read-c27cf4?style=flat" alt="documentation" /></a>
 </p>
 
 > This module is **ESM** 🔆. Please [**read this**](https://gist.github.com/onury/d3f3d765d7db2e8b2d050d14315f2ac7).
@@ -29,9 +28,6 @@ import { Tilo } from 'tilo';
 const tilo = new Tilo({ level: 'debug' });
 tilo.info('Output colorful logs with date/time and level info.');
 ```
-
-> [!TIP]
-> Read the concise [**API reference**](https://onury.io/tilo).
 
 ## Guide
 
@@ -101,10 +97,6 @@ tilo.on('log', (logInfo) => {
 ## Security & Quality
 
 100% test coverage (lines/functions/statements/branches) verified by **mutation testing** (Stryker), enforced in CI across Node 20, 22, and 24.
-
-## Documentation
-
-API reference and guides: **[onury.io/tilo](https://onury.io/tilo)**.
 
 ## Changelog
 
