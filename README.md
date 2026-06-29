@@ -14,6 +14,10 @@
 
 **Tiny logger** with styles and levels for Node.js / TypeScript — colorful, leveled output with per-level streams, a custom formatter, safe stringify, tables, traces, and a `log` event.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/onury/tilo/master/tilo-ss.png" alt="tilo output" width="100%" />
+</p>
+
 ## Installation
 
 ```sh
