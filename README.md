@@ -95,6 +95,10 @@ const tilo = new Tilo({ cleanStack: true });            // drop internal/native 
 const t2 = new Tilo({ cleanStack: ['node_modules'] });  // drop frames matching keywords
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/onury/tilo/master/tilo-stack.png" alt="tilo cleanStack — before & after" width="100%" />
+</p>
+
 ### Emoji
 
 Resolve an emoji by name (falls back to the `:name:` text on CI or when styles are off):
