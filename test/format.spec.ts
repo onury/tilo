@@ -132,7 +132,7 @@ describe('Tilo.defaultFormat (DEFAULT_FORMAT_FN)', () => {
       expect(out).toBe(expected);
     });
 
-    it('colors the message green for the "ok" method while keeping the INFO level label', () => {
+    it('uses a bold green "OK" badge and green message for the "ok" method', () => {
       const out = Tilo.defaultFormat(
         makeInfo({ level: LogLevel.INFO, method: 'ok', text: 'done', args: ['done'] }),
         styled
@@ -142,7 +142,7 @@ describe('Tilo.defaultFormat (DEFAULT_FORMAT_FN)', () => {
         ' ' +
         styled.white(TIME) +
         '  ' +
-        styled.bold(styled.blue('INFO ')) +
+        styled.bold(styled.green('OK   ')) +
         '  ' +
         styled.green('done') +
         '\n';

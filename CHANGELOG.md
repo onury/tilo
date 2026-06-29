@@ -12,6 +12,7 @@ A modernization release. The logging **API is unchanged** — the breaking chang
 - **Node ≥ 22.** The supported range moved up to the current LTS floor (was `>=8`).
 - **Dependencies updated** to current majors — `chalk@5` (itself ESM-only), `node-emoji@2`, `table@6`, `ci-info@4`, `fast-safe-stringify@2`.
 - **Toolchain modernized** — Biome (lint/format), Vitest + Stryker (test/coverage/mutation), `tsc` build, and GitHub Actions CI replace tslint / jest / docma / Travis.
+- **`ok()` badge.** `ok()` now renders a distinct green `OK` badge instead of the blue `INFO` one (it remains an INFO-level alias).
 
 ### Removed
 - The CommonJS build. (See the migration note above — the only consumer-facing change is `require` → `import`.)

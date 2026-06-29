@@ -35,10 +35,14 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
   const datetime = clk.gray(info.date) + ' ' + clk.white(info.time);
   const levelStyle = clk[defaultLevelColor[info.level]];
   const methodColor = defaultMsgColor[info.method];
+  const badgeStyle = methodColor ? clk[methodColor] : levelStyle;
   const msgStyle = methodColor ? clk[methodColor] : levelStyle;
   const verboseOrSilly = info.level === LogLevel.VERBOSE || info.level === LogLevel.SILLY;
 
-  let level = levelStyle((info.level.toUpperCase() + '     ').slice(0, 5));
+  // a method with its own style (e.g. `ok`) shows its own badge label & color;
+  // otherwise the badge is the level name in the level color.
+  const badge = methodColor ? info.method.toUpperCase() : info.level.toUpperCase();
+  let level = badgeStyle((badge + '     ').slice(0, 5));
   if (!verboseOrSilly) level = clk.bold(level);
 
   const meta = datetime + '  ' + level + '  ';
