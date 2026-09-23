@@ -29,6 +29,7 @@ const defaultMsgColor: any = {
 };
 
 const disabledChalk: ChalkInstance = new Chalk({ level: 0 });
+const reStackStart = /[\r\n][ \t]+at[\s\S]*/;
 const reStackLines = /([ \t]+at.*?)(?:([^:/\\( ]+):(\d+):(\d+))?(\)?)([\r\n]|$)/g;
 
 const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
@@ -48,11 +49,13 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
   const meta = datetime + '  ' + level + '  ';
 
   const text = info.text;
+  // Only an optimization: with styles off every `clk.*` call is the identity,
+  // so the stack branch would reproduce `text` unchanged anyway.
+  // Stryker disable next-line ConditionalExpression,EqualityOperator: equivalent (see above)
   if (clk.level > 0) {
-    const m = text.match(/([\r\n][ \t]+at[\s\S]*$)/);
+    const m = reStackStart.exec(text);
     if (m) {
-      const p = text.split(/([\r\n][ \t]+at.*)/g);
-      const message = msgStyle(p[0]);
+      const message = msgStyle(text.slice(0, m.index));
       const stack = m[0].replace(
         reStackLines,
         (s: string, $1: string, $2: string, $3: string, $4: string, $5: string, $6: string) => {

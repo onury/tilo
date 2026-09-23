@@ -68,9 +68,9 @@ const helper = {
     stackLines.forEach((line: string) => {
       const leaveOut =
         // don't include stack-lines with no file path in them.
-        !/.+:\d+:\d+\)/.test(line) ||
+        !/:\d+:\d+\)/.test(line) ||
         // if set, don't include stack-lines with ignored keywords in them.
-        (filterList.length > 0 && filterList.some((keyword: string) => line.indexOf(keyword) >= 0));
+        filterList.some((keyword: string) => line.includes(keyword));
       // otherwise, add to filtered
       if (!leaveOut) filteredLines.push(line);
     });
