@@ -13,5 +13,5 @@
     "!src/**/types/**"
   ],
   "htmlReporter": { "fileName": "test/stryker/mutation-report.html" },
-  "thresholds": { "high": 98, "low": 90, "break": 98 }
+  "thresholds": { "high": 100, "low": 90, "break": 100 }
 }
