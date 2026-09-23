@@ -114,7 +114,7 @@ Pass an `options` object to the constructor:
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `enabled` | `boolean` | `true` | Whether log output is enabled. |
-| `level` | `string` | `"debug"` | Logging level — use the `Tilo.Level` enum. |
+| `level` | `LogLevel` | `"debug"` | Logging level — a `LogLevel` (`Tilo.Level`) member or its string, e.g. `"warn"`. |
 | `format` | `LogFormatFn` | `Tilo.defaultFormat` | Formatting/styling function. Set to `null` to disable formatting. |
 | `styles` | `boolean` | `true` | Whether styles and colors are enabled. |
 | `streams` | `ILogLevelStreams \| NodeJS.WriteStream` | `process.stdout` | Per-level write streams; a single stream becomes the default for every level. |
@@ -130,6 +130,8 @@ Pass an `options` object to the constructor:
 | `VERBOSE` | `3` | `verbose()` | Verbose logs. |
 | `DEBUG` | `4` | `debug()` · `dir()` · `trace()` | Debug logs. `dir()` inspects an object; `trace()` appends a stack trace to the current position. |
 | `SILLY` | `5` | `silly()` | Silly logs. |
+
+A call below the active level is dropped before any formatting is done, unless a `log` listener is attached.
 
 There's also `log(level, …args)` (defaults to `INFO`), plus `newline()` and `emoji(name)`:
 
