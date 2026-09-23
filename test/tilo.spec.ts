@@ -804,4 +804,111 @@ describe('Tilo', () => {
       expect(Tilo.Event).toBe(LogEvent);
     });
   });
+
+  // ----------------------------------------------------------------------
+  // skipping work for logs nobody will see
+  // ----------------------------------------------------------------------
+
+  describe('disabled levels', () => {
+    const calls: Array<[string, (t: Tilo) => void, LogLevel]> = [
+      ['error', (t) => t.error('x'), LogLevel.ERROR],
+      ['warn', (t) => t.warn('x'), LogLevel.WARN],
+      ['info', (t) => t.info('x'), LogLevel.INFO],
+      ['ok', (t) => t.ok('x'), LogLevel.INFO],
+      ['plain', (t) => t.plain('x'), LogLevel.INFO],
+      ['table', (t) => t.table([['x']]), LogLevel.INFO],
+      ['verbose', (t) => t.verbose('x'), LogLevel.VERBOSE],
+      ['debug', (t) => t.debug('x'), LogLevel.DEBUG],
+      ['dir', (t) => t.dir({ x: 1 }), LogLevel.DEBUG],
+      ['trace', (t) => t.trace('x'), LogLevel.DEBUG],
+      ['silly', (t) => t.silly('x'), LogLevel.SILLY],
+      ['log', (t) => t.log(LogLevel.VERBOSE, 'x'), LogLevel.VERBOSE]
+    ];
+
+    // the level right above each call's level, so the call is just disabled
+    const above: Record<LogLevel, LogLevel | null> = {
+      [LogLevel.ERROR]: null,
+      [LogLevel.WARN]: LogLevel.ERROR,
+      [LogLevel.INFO]: LogLevel.WARN,
+      [LogLevel.VERBOSE]: LogLevel.INFO,
+      [LogLevel.DEBUG]: LogLevel.VERBOSE,
+      [LogLevel.SILLY]: LogLevel.DEBUG
+    };
+
+    for (const [name, call, level] of calls) {
+      const off = above[level];
+
+      it(`#${name}() writes when its level is exactly the active level`, () => {
+        const cap = capture();
+        const tilo = new Tilo({ level, streams: cap.stream });
+        const spy = vi.spyOn(tilo as any, '$getLogInfo');
+        call(tilo);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(cap.writes.length).toBeGreaterThan(0);
+      });
+
+      if (!off) continue;
+
+      it(`#${name}() does no work when its level is disabled and nothing listens`, () => {
+        const cap = capture();
+        const tilo = new Tilo({ level: off, streams: cap.stream });
+        const spy = vi.spyOn(tilo as any, '$getLogInfo');
+        call(tilo);
+        expect(spy).not.toHaveBeenCalled();
+        expect(cap.writes).toHaveLength(0);
+      });
+
+      it(`#${name}() still emits (without writing) when its level is disabled but a listener exists`, () => {
+        const cap = capture();
+        const tilo = new Tilo({ level: off, streams: cap.stream });
+        const events: ILogInfo[] = [];
+        tilo.on(LogEvent.LOG, (info: ILogInfo) => events.push(info));
+        call(tilo);
+        expect(events).toHaveLength(1);
+        expect(events[0].level).toBe(level);
+        expect(events[0].levelEnabled).toBe(false);
+        expect(cap.writes).toHaveLength(0);
+      });
+    }
+
+    it('skips the table rendering itself when the level is disabled', () => {
+      const tilo = new Tilo({ level: LogLevel.WARN, streams: capture().stream });
+      // an empty table makes the `table` package throw, so reaching it would fail
+      expect(() => tilo.table([])).not.toThrow();
+      tilo.on(LogEvent.LOG, () => {});
+      expect(() => tilo.table([])).toThrow();
+    });
+
+    it('goes back to skipping once the last listener is removed', () => {
+      const tilo = new Tilo({ level: LogLevel.WARN, streams: capture().stream });
+      const spy = vi.spyOn(tilo as any, '$getLogInfo');
+      const onLog = (): void => {};
+      tilo.on(LogEvent.LOG, onLog);
+      tilo.info('x');
+      expect(spy).toHaveBeenCalledTimes(1);
+      tilo.off(LogEvent.LOG, onLog);
+      tilo.info('x');
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('checks an invalid log() level as INFO', () => {
+      const tilo = new Tilo({ level: LogLevel.WARN, streams: capture().stream });
+      const spy = vi.spyOn(tilo as any, '$getLogInfo');
+      tilo.log('loud' as LogLevel, 'x');
+      expect(spy).not.toHaveBeenCalled();
+      tilo.level = LogLevel.INFO;
+      tilo.log('loud' as LogLevel, 'x');
+      expect(spy).toHaveBeenCalledWith('log', LogLevel.INFO, ['loud', 'x']);
+    });
+
+    it('emits nothing at all when logging is disabled, even with a listener', () => {
+      const cap = capture();
+      const tilo = new Tilo({ enabled: false, streams: cap.stream });
+      const events: ILogInfo[] = [];
+      tilo.on(LogEvent.LOG, (info: ILogInfo) => events.push(info));
+      for (const [, call] of calls) call(tilo);
+      expect(events).toHaveLength(0);
+      expect(cap.writes).toHaveLength(0);
+    });
+  });
 });

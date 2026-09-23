@@ -292,7 +292,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   error(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.ERROR)) return;
     const log = this.$getLogInfo('error', LogLevel.ERROR, args);
     this.$write(log);
   }
@@ -302,7 +302,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   warn(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.WARN)) return;
     const log = this.$getLogInfo('warn', LogLevel.WARN, args);
     this.$write(log);
   }
@@ -312,7 +312,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   info(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.INFO)) return;
     const log = this.$getLogInfo('info', LogLevel.INFO, args);
     this.$write(log);
   }
@@ -323,7 +323,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   ok(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.INFO)) return;
     const log = this.$getLogInfo('ok', LogLevel.INFO, args);
     this.$write(log);
   }
@@ -334,7 +334,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   plain(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.INFO)) return;
     const log = this.$getLogInfo('plain', LogLevel.INFO, args);
     this.$write(log, false);
   }
@@ -344,7 +344,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   verbose(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.VERBOSE)) return;
     const log = this.$getLogInfo('verbose', LogLevel.VERBOSE, args);
     this.$write(log);
   }
@@ -354,7 +354,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   debug(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.DEBUG)) return;
     const log = this.$getLogInfo('debug', LogLevel.DEBUG, args);
     this.$write(log);
   }
@@ -366,7 +366,7 @@ class Tilo extends EventEmitter {
    *  @param options - Inspect options (`util.InspectOptions`).
    */
   dir(object: any, options?: any): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.DEBUG)) return;
 
     options = {
       customInspect: false,
@@ -381,7 +381,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   trace(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.DEBUG)) return;
 
     // from Node source
     const err = new Error();
@@ -401,7 +401,7 @@ class Tilo extends EventEmitter {
    *  @param options - Table options.
    */
   table(data: any[], options?: any): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.INFO)) return;
 
     const text: string = table(data, options);
     const log = this.$getLogInfo('table', LogLevel.INFO, [text]);
@@ -413,7 +413,7 @@ class Tilo extends EventEmitter {
    *  @param args - Arguments to be logged.
    */
   silly(...args: any[]): void {
-    if (!this.enabled) return;
+    if (this.$skip(LogLevel.SILLY)) return;
     const log = this.$getLogInfo('silly', LogLevel.SILLY, args);
     this.$write(log);
   }
@@ -428,11 +428,11 @@ class Tilo extends EventEmitter {
    *  tilo.log('warn', 'message...'); // —» message...
    */
   log(level: LogLevel | `${LogLevel}`, ...args: any[]): void {
-    if (!this.enabled) return;
     if (!this.isValidLevel(level)) {
       args.unshift(level);
       level = LogLevel.INFO;
     }
+    if (this.$skip(level as LogLevel)) return;
     const log = this.$getLogInfo('log', level as LogLevel, args);
     this.$write(log);
   }
@@ -512,6 +512,18 @@ class Tilo extends EventEmitter {
     if (!this.enabled) return;
     const stream: any = this.getStream(LogLevel.INFO);
     if (stream) stream.write('\n');
+  }
+
+  /**
+   *  Whether a log at the given level can be dropped before any work is done:
+   *  logging is disabled, or the level is not enabled and nothing listens to
+   *  the {@link LogEvent.LOG} event.
+   *  @param level - Level of the log.
+   *  @returns `true` if the log produces no output and no event.
+   */
+  protected $skip(level: LogLevel): boolean {
+    if (!this.enabled) return true;
+    return this.priority < Tilo.getPriorityOf(level) && this.listenerCount(LogEvent.LOG) === 0;
   }
 
   /**
