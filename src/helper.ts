@@ -27,10 +27,7 @@ const helper = {
   },
 
   allLevelsWritable(o: ILogLevelStreams): boolean {
-    return Object.keys(LogLevel).every((key: string) => {
-      const level: string = (LogLevel as any)[key];
-      return helper.isWritableObject(o[level]);
-    });
+    return Object.values(LogLevel).every((level) => helper.isWritableObject(o[level]));
   },
 
   identityFormat(info: ILogInfo): string {

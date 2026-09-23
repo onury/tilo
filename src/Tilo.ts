@@ -386,7 +386,7 @@ class Tilo extends EventEmitter {
     // from Node source
     const err = new Error();
     err.name = '[TRACE]';
-    err.message = util.format.apply(null, args);
+    err.message = util.format(...args);
     Error.captureStackTrace(err, this.trace);
 
     const log = this.$getLogInfo('trace', LogLevel.DEBUG, [err.stack]);
@@ -491,7 +491,7 @@ class Tilo extends EventEmitter {
    *  @returns Whether the given level is a valid log level.
    */
   isValidLevel(level: string): boolean {
-    return Object.keys(LogLevel).some((key: string) => LogLevel[key] === level);
+    return (Object.values(LogLevel) as string[]).includes(level);
   }
 
   /**
@@ -543,7 +543,7 @@ class Tilo extends EventEmitter {
       timestamp: d.getTime(),
       date,
       time,
-      text: util.format.apply(util, args),
+      text: util.format(...args),
       args,
       method
     };
