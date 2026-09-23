@@ -217,6 +217,26 @@ describe('Tilo.defaultFormat (DEFAULT_FORMAT_FN)', () => {
       expect(out).toBe(expected);
     });
 
+    it('keeps the closing paren of a file-less frame', () => {
+      const text = 'X\n    at foo (native)';
+      const out = Tilo.defaultFormat(makeInfo({ text, args: [text] }), styled);
+      expect(out.endsWith(styled.gray('    at foo (native)') + '\n')).toBe(true);
+      expect(stripAnsi(out).endsWith('    at foo (native)\n')).toBe(true);
+    });
+
+    it('renders a frame without parens (no stray close-paren styling)', () => {
+      const text = 'X\n    at /a/c.js:3:4';
+      const out = Tilo.defaultFormat(makeInfo({ text, args: [text] }), styled);
+      const stack =
+        styled.gray('    at /a/') +
+        styled.yellow('c.js') +
+        ':' +
+        styled.white('3') +
+        ':' +
+        styled.white('4');
+      expect(out.endsWith(stack + '\n')).toBe(true);
+    });
+
     it('stripped styled stack output equals the plain rendering of the same log', () => {
       const text = 'Error: boom\n    at foo (/a/b.js:1:2)\n    at /c/d.js:3:4';
       const info = makeInfo({ level: LogLevel.ERROR, method: 'error', text, args: [text] });

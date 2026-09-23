@@ -58,18 +58,20 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
       const message = msgStyle(text.slice(0, m.index));
       const stack = m[0].replace(
         reStackLines,
-        (s: string, $1: string, $2: string, $3: string, $4: string, $5: string, $6: string) => {
-          let lineInfo = '';
-          if ($2) {
-            lineInfo =
-              clk.yellow($2) +
-              ':' +
-              clk.white($3) +
-              ':' +
-              clk.white($4) +
-              clk.gray($5 || /* istanbul ignore next */ '');
-          }
-          return clk.gray($1) + lineInfo + $6;
+        (_s: string, $1: string, $2: string, $3: string, $4: string, $5: string, $6: string) => {
+          // a frame without a file path (e.g. `at foo (native)`) keeps its
+          // closing paren
+          if (!$2) return clk.gray($1 + $5) + $6;
+          return (
+            clk.gray($1) +
+            clk.yellow($2) +
+            ':' +
+            clk.white($3) +
+            ':' +
+            clk.white($4) +
+            clk.gray($5) +
+            $6
+          );
         }
       );
       return meta + message + stack + '\n';
