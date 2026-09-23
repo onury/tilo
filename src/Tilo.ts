@@ -94,7 +94,7 @@ class Tilo extends EventEmitter {
     enabled?: boolean;
     level?: LogLevel;
     priority?: LogPriority;
-    format?: LogFormatFn;
+    format?: LogFormatFn | null;
     styles?: boolean;
     chalk?: ChalkInstance;
     streams?: ILogLevelStreams;
@@ -114,7 +114,7 @@ class Tilo extends EventEmitter {
     this.enabled = 'enabled' in options ? Boolean(options.enabled) : true;
     this.level = options.level || LogLevel.DEBUG;
     this.styles = 'styles' in options ? Boolean(options.styles) : true;
-    this.format = 'format' in options ? (options.format as LogFormatFn) : Tilo.defaultFormat;
+    this.format = 'format' in options ? (options.format as LogFormatFn | null) : Tilo.defaultFormat;
     this.streams = options.streams as any;
     this.cleanStack = options.cleanStack as boolean | string[];
   }
@@ -170,7 +170,8 @@ class Tilo extends EventEmitter {
 
   /**
    *  Gets or sets a function that returns a formatted log string. See
-   *  {@link LogFormatFn}.
+   *  {@link LogFormatFn}. Set to `null` to write the plain log text without
+   *  any formatting.
    *
    *  @example
    *  const tilo = new Tilo();
@@ -186,7 +187,7 @@ class Tilo extends EventEmitter {
   get format(): LogFormatFn {
     return this.$.format!;
   }
-  set format(value: LogFormatFn) {
+  set format(value: LogFormatFn | null) {
     this.$.format = value;
   }
 

@@ -14,9 +14,10 @@ interface ILogOptions {
   level?: LogLevel | `${LogLevel}`;
   /**
    *  The formatter function for styling and coloring the log output. If not
-   *  set, the default formatter function will be used.
+   *  set, the default formatter function will be used. Set to `null` to write
+   *  the plain log text without any formatting.
    */
-  format?: LogFormatFn;
+  format?: LogFormatFn | null;
   /**
    *  Whether styles and colors are enabled. Useful if you do not want to
    *  change the formatter function but still disable styles. Default: `true`

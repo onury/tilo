@@ -1,6 +1,6 @@
 import { Writable } from 'node:stream';
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import type { ILogOptions } from '../src/index.js';
+import type { ILogOptions, LogFormatFn } from '../src/index.js';
 import { LogLevel, LogPriority, Tilo } from '../src/index.js';
 
 // These checks run at compile time (`npm run typecheck`, part of `npm test`);
@@ -44,6 +44,28 @@ describe('types', () => {
       expect(typeof bad).toBe('function');
       // @ts-expect-error — not a log level
       expect(() => Tilo.getPriorityOf('loud')).not.toThrow();
+    });
+  });
+
+  describe('format accepts null on the option and the setter', () => {
+    it('writes the plain text when format is null', () => {
+      const writes: string[] = [];
+      const stream = new Writable({
+        write(chunk, _encoding, callback) {
+          writes.push(String(chunk));
+          callback();
+        }
+      });
+      const tilo = new Tilo({ format: null, streams: stream });
+      tilo.info('a');
+      tilo.format = Tilo.defaultFormat;
+      tilo.format = null;
+      tilo.info('b');
+      expect(writes).toEqual(['a', 'b']);
+
+      expectTypeOf<ILogOptions['format']>().toEqualTypeOf<LogFormatFn | null | undefined>();
+      // the getter keeps its callable type
+      expectTypeOf<Tilo['format']>().toEqualTypeOf<LogFormatFn>();
     });
   });
 });
