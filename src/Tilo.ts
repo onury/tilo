@@ -49,33 +49,30 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
   const meta = datetime + '  ' + level + '  ';
 
   const text = info.text;
-  // Only an optimization: with styles off every `clk.*` call is the identity,
-  // so the stack branch would reproduce `text` unchanged anyway.
-  // Stryker disable next-line ConditionalExpression,EqualityOperator: equivalent (see above)
-  if (clk.level > 0) {
-    const m = reStackStart.exec(text);
-    if (m) {
-      const message = msgStyle(text.slice(0, m.index));
-      const stack = m[0].replace(
-        reStackLines,
-        (_s: string, $1: string, $2: string, $3: string, $4: string, $5: string, $6: string) => {
-          // a frame without a file path (e.g. `at foo (native)`) keeps its
-          // closing paren
-          if (!$2) return clk.gray($1 + $5) + $6;
-          return (
-            clk.gray($1) +
-            clk.yellow($2) +
-            ':' +
-            clk.white($3) +
-            ':' +
-            clk.white($4) +
-            clk.gray($5) +
-            $6
-          );
-        }
-      );
-      return meta + message + stack + '\n';
-    }
+  // stack frames get their own colors; with styles off every `clk.*` call is
+  // the identity, so the stack comes out exactly as it came in.
+  const m = reStackStart.exec(text);
+  if (m) {
+    const message = msgStyle(text.slice(0, m.index));
+    const stack = m[0].replace(
+      reStackLines,
+      (_s: string, $1: string, $2: string, $3: string, $4: string, $5: string, $6: string) => {
+        // a frame without a file path (e.g. `at foo (native)`) keeps its
+        // closing paren
+        if (!$2) return clk.gray($1 + $5) + $6;
+        return (
+          clk.gray($1) +
+          clk.yellow($2) +
+          ':' +
+          clk.white($3) +
+          ':' +
+          clk.white($4) +
+          clk.gray($5) +
+          $6
+        );
+      }
+    );
+    return meta + message + stack + '\n';
   }
   return meta + msgStyle(text) + '\n';
 };
