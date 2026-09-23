@@ -482,9 +482,7 @@ class Tilo extends EventEmitter {
    *  @example
    *  tilo.info('All done!', tilo.emoji('punch'));
    */
-  /* istanbul ignore next */
   emoji(name: string): string {
-    // below is actually tested but emoji is disabled in CI env.
     const s = name.trim().replace(/(^:|:$)/g, '');
     if (this.isInCI || !this.styles) return ':' + s + ':';
     return s ? (getEmoji(s) ?? name) : name;
@@ -503,14 +501,10 @@ class Tilo extends EventEmitter {
    *  Plays system beep if the `info` level stream is TTY and called from a
    *  non-CI environment.
    */
-  /* istanbul ignore next */
   beep(): void {
-    // disabled in CI env.
     if (!this.enabled || this.isInCI) return;
     const stream: any = this.getStream(LogLevel.INFO);
-    /* istanbul ignore next */
     if (!stream || !('isTTY' in stream) || !stream.isTTY) return;
-    /* istanbul ignore next */
     stream.write('\u0007');
   }
 
@@ -520,7 +514,6 @@ class Tilo extends EventEmitter {
   newline(): void {
     if (!this.enabled) return;
     const stream: any = this.getStream(LogLevel.INFO);
-    /* istanbul ignore else */
     if (stream) stream.write('\n');
   }
 
