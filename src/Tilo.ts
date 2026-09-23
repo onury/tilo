@@ -125,7 +125,7 @@ class Tilo extends EventEmitter {
    *  @param level - Log level.
    *  @returns The priority of the given level.
    */
-  static getPriorityOf(level: LogLevel): LogPriority {
+  static getPriorityOf(level: LogLevel | `${LogLevel}`): LogPriority {
     return LogPriority[level.toUpperCase()];
   }
 
@@ -154,8 +154,8 @@ class Tilo extends EventEmitter {
   get level(): LogLevel {
     return this.$.level!;
   }
-  set level(value: LogLevel) {
-    this.$.level = value;
+  set level(value: LogLevel | `${LogLevel}`) {
+    this.$.level = value as LogLevel;
     this.$.priority = Tilo.getPriorityOf(value);
   }
 
@@ -282,7 +282,7 @@ class Tilo extends EventEmitter {
    *  @param level - Target log level.
    *  @returns The writable stream for the given level.
    */
-  getStream(level: LogLevel): NodeJS.WritableStream {
+  getStream(level: LogLevel | `${LogLevel}`): NodeJS.WritableStream {
     return this.$.streams![level] || this.$.streams!.default!;
   }
 
@@ -426,13 +426,13 @@ class Tilo extends EventEmitter {
    *  // outputs in warning level logs:
    *  tilo.log('warn', 'message...'); // —» message...
    */
-  log(level: LogLevel, ...args: any[]): void {
+  log(level: LogLevel | `${LogLevel}`, ...args: any[]): void {
     if (!this.enabled) return;
     if (!this.isValidLevel(level)) {
       args.unshift(level);
       level = LogLevel.INFO;
     }
-    const log = this.$getLogInfo('log', level, args);
+    const log = this.$getLogInfo('log', level as LogLevel, args);
     this.$write(log);
   }
 

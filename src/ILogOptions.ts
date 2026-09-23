@@ -11,7 +11,7 @@ interface ILogOptions {
   /**
    *  Log level to be set for the logger. Default: {@link LogLevel.DEBUG}
    */
-  level?: LogLevel;
+  level?: LogLevel | `${LogLevel}`;
   /**
    *  The formatter function for styling and coloring the log output. If not
    *  set, the default formatter function will be used.
