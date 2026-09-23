@@ -139,7 +139,7 @@ tilo.log('debug', 'message…');
 
 ### Log event
 
-`Tilo` is an `EventEmitter` — run custom logic on the `log` event:
+`Tilo` is an `EventEmitter` — run custom logic on the `log` event. It fires for every log attempt, including levels below the active one (check `logInfo.levelEnabled`), but not while `enabled` is `false`:
 
 ```ts
 tilo.on('log', (logInfo) => {

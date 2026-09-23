@@ -82,7 +82,7 @@ const DEFAULT_FORMAT_FN = (info: ILogInfo, clk: ChalkInstance): string => {
  *
  *  @remarks
  *  Extends Node's `EventEmitter`, emitting the {@link LogEvent.LOG} event on
- *  every log attempt.
+ *  every log attempt while logging is enabled.
  *
  *  @see {@link https://github.com/onury/tilo | GitHub Repo}
  */
@@ -582,7 +582,7 @@ class Tilo extends EventEmitter {
     }
 
     // Emit the `log` event ({@link LogEvent.LOG}) with the {@link ILogInfo}
-    // object on every log attempt, even when the level is not enabled.
+    // object, even when the level is not enabled (unless logging is disabled).
     this.emit(LogEvent.LOG, logInfo);
   }
 }
