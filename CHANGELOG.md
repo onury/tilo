@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
 
+## Unreleased
+
+### Fixed
+- **Stack frames without a file path** kept their closing paren only in unstyled output. With styles on, `at foo (native)` printed as `at foo (native`.
+
+### Changed
+- **chalk 6.** The bundled chalk moves to v6 (it needs Node 22, which tilo already requires). A numeric `FORCE_COLOR` now sets that exact color level.
+
+### Tooling
+- **CI** tests Node 22, 24 and 26 (Node 20 reached end-of-life), upgrades npm to v11 before installing to get around an npm 10.9 resolver crash (npm/cli#9787), and enforces the 100% coverage thresholds.
+- **Mutation score is 100%** (was 98%). The break threshold is now 100, and the code that only equivalent mutants could touch is gone.
+
 ## 3.0.0 (2026-06-29)
 
 A modernization release. The logging **API is unchanged** — the breaking changes are packaging and runtime.
