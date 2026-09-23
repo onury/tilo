@@ -31,7 +31,6 @@ const helper = {
   },
 
   identityFormat(info: ILogInfo): string {
-    // , chalk: Chalk
     return info.text ?? '';
   },
 

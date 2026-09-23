@@ -199,7 +199,6 @@ class Tilo extends EventEmitter {
   }
   set styles(value: boolean) {
     this.$.styles = Boolean(value);
-    // this.$.chalk = new chalk.constructor({ enabled: value });
     this.$.chalk = value ? chalk : disabledChalk;
   }
 
@@ -318,8 +317,8 @@ class Tilo extends EventEmitter {
   }
 
   /**
-   *  Alias of the {@link Tilo.info} method. Might be useful for
-   *  styling/formatting successful result logs.
+   *  Writes an `info` level log for a successful result. The default
+   *  formatter shows it with a green `OK` badge instead of `INFO`.
    *  @param args - Arguments to be logged.
    */
   ok(...args: any[]): void {
@@ -568,8 +567,6 @@ class Tilo extends EventEmitter {
       // write the log to corresponding stream of the log level
       stream.write(log);
     }
-
-    // if (this.listenerCount(LogEvent.LOG) <= 0) return;
 
     // Emit the `log` event ({@link LogEvent.LOG}) with the {@link ILogInfo}
     // object on every log attempt, even when the level is not enabled.
