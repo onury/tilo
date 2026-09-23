@@ -172,7 +172,7 @@ Every constructor option is also a live `get`/`set` accessor (`enabled`, `level`
 
 ## Security & Quality
 
-100% test coverage (lines/functions/statements/branches) verified by **mutation testing** (Stryker), enforced in CI across Node 20, 22, and 24.
+100% test coverage (lines/functions/statements/branches), enforced in CI across Node 22, 24, and 26, and verified by **mutation testing** (Stryker).
 
 ## Changelog
 
